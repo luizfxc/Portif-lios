@@ -1,0 +1,36 @@
+{% extends "base.html" %} 
+
+{% block title %}Confirmar Exclusão{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <h1 class="mb-4">Excluir Tecnologia</h1>
+    
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Atenção! Confirmação Necessária</h4>
+        <p>Você tem certeza que deseja excluir a tecnologia:</p>
+        
+        <h2 class="display-6 text-danger">"{{ tecnologia.nome }}"</h2>
+        
+        <hr>
+        <p class="mb-0">
+            Esta ação é **irreversível**. Se esta tecnologia estiver associada a algum projeto, a associação será removida, mas o projeto **NÃO** será excluído.
+        </p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <button type="submit" class="btn btn-danger btn-lg me-3">
+            Sim, Excluir Definitivamente
+        </button>
+        
+        <a href="{% url 'portifolio:tecnologia_listar' %}" class="btn btn-secondary btn-lg">
+            Cancelar e Voltar
+        </a>
+        
+    </form>
+    
+</div>
+{% endblock %}

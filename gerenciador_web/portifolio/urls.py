@@ -1,7 +1,6 @@
-# portifolio/urls.py (Versão Corrigida com Importação Explícita)
+# portifolio/urls.py (Versão Completa)
 
 from django.urls import path
-# 🛑 Importe todas as funções que você usa diretamente da view
 from .views import (
     listar_projetos, detalhe_projeto, adicionar_projeto, alterar_projeto, excluir_projeto,
     tecnologia_listar, tecnologia_criar, tecnologia_editar, tecnologia_excluir,
@@ -16,8 +15,7 @@ urlpatterns = [
     
     # Views de Projetos
     path('', listar_projetos, name='listar_projetos'),
-    path('<int:projeto_id>/', detalhe_projeto, name='detalhe_projeto'), # 🛑 Aqui, detalhe_projeto é chamado diretamente
-
+    path('<int:projeto_id>/', detalhe_projeto, name='detalhe_projeto'),
     path('adicionar/', adicionar_projeto, name='adicionar_projeto'),
     path('<int:projeto_id>/alterar/', alterar_projeto, name='alterar_projeto'),
     path('<int:projeto_id>/excluir/', excluir_projeto, name='excluir_projeto'),

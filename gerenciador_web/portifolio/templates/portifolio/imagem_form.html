@@ -1,0 +1,50 @@
+{% extends "base.html" %} 
+
+{% block title %}Adicionar Imagem ao Projeto: {{ projeto.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <h1 class="mb-4">
+        Adicionar Imagem a: 
+        <a href="{% url 'portifolio:detalhe_projeto' projeto.id %}" class="text-decoration-none text-primary">{{ projeto.titulo }}</a>
+    </h1>
+    
+    <p class="lead">Selecione o arquivo de imagem e adicione uma legenda.</p>
+    
+    <form method="post" enctype="multipart/form-data">
+        
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="{{ form.imagem.id_for_label }}" class="form-label fw-bold">Arquivo de Imagem</label>
+                    {{ form.imagem }}
+                    {% if form.imagem.errors %}
+                        <div class="alert alert-danger mt-1">{{ form.imagem.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="{{ form.legenda.id_for_label }}" class="form-label fw-bold">Legenda (Opcional)</label>
+                    {{ form.legenda }}
+                    {% if form.legenda.errors %}
+                        <div class="alert alert-danger mt-1">{{ form.legenda.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-success btn-lg mt-3 me-2">
+            Fazer Upload da Imagem
+        </button>
+        
+        <a href="{% url 'portifolio:detalhe_projeto' projeto.id %}" class="btn btn-secondary btn-lg mt-3">
+            Cancelar
+        </a>
+        
+    </form>
+</div>
+{% endblock %}

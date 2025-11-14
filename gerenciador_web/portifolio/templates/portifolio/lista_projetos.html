@@ -1,0 +1,62 @@
+{% extends "base.html" %} 
+
+{% block title %}Meu Portfólio de Projetos{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">Portfólio de Projetos</h1>
+    <p class="text-center lead">Explore meus trabalhos mais recentes.</p>
+    
+    <div class="mb-4">
+        <a href="{% url 'portifolio:adicionar_projeto' %}" class="btn btn-success">
+            + Adicionar Novo Projeto
+        </a>
+    </div>
+
+    {% if projetos %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for projeto in projetos %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    
+                    {% with primeira_imagem=projeto.imagens.first %}
+                        {% if primeira_imagem %}
+                            <img src="{{ primeira_imagem.imagem.url }}" class="card-img-top" alt="{{ primeira_imagem.legenda }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <div class="p-5 bg-light text-center text-muted border-bottom">Sem Imagem</div>
+                        {% endif %}
+                    {% endwith %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'portifolio:detalhe_projeto' projeto.id %}" class="text-decoration-none">
+                                {{ projeto.titulo }}
+                            </a>
+                        </h5>
+                        <p class="card-text">{{ projeto.descricao|truncatechars:100 }}</p>
+                    </div>
+
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            Criado em: {{ projeto.data_criacao|date:"d/m/Y" }}
+                        </small>
+                        <br>
+                        <small>
+                            Tecnologias: 
+                            {% for tec in projeto.tecnologias.all %}
+                                <span class="badge bg-primary me-1">{{ tec.nome }}</span>
+                            {% endfor %}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            Nenhum projeto cadastrado no momento.
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

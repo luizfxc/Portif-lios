@@ -1,0 +1,36 @@
+{% extends "base.html" %} 
+
+{% block title %}
+    {% if tecnologia %}
+        Editar Tecnologia: {{ tecnologia.nome }}
+    {% else %}
+        Criar Nova Tecnologia
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <h1 class="mb-4 border-bottom pb-2">
+        {% if tecnologia %}
+            Editar Tecnologia: <span class="text-primary">{{ tecnologia.nome }}</span>
+        {% else %}
+            Adicionar Nova Tecnologia
+        {% endif %}
+    </h1>
+    
+    <form method="post">
+        
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+        
+        <button type="submit" class="btn btn-success me-2">
+            {% if tecnologia %}Salvar Alterações{% else %}Criar Tecnologia{% endif %}
+        </button>
+        
+        <a href="{% url 'portifolio:tecnologia_listar' %}" class="btn btn-secondary">Cancelar e Voltar</a>
+        
+    </form>
+</div>
+{% endblock %}

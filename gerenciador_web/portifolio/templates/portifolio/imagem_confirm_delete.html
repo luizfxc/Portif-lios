@@ -1,0 +1,41 @@
+{% extends "base.html" %} 
+
+{% block title %}Confirmar Exclusão de Imagem{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <h1 class="mb-4">
+        Excluir Imagem do Projeto: 
+        <span class="text-primary">{{ imagem.projeto.titulo }}</span>
+    </h1>
+    
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Atenção! Confirmação Necessária</h4>
+        <p>Você tem certeza que deseja excluir esta imagem?</p>
+        
+        <h3 class="mt-4">Legenda: <span class="text-danger">{{ imagem.legenda }}</span></h3>
+        
+        <img src="{{ imagem.imagem.url }}" alt="{{ imagem.legenda }}" style="max-width: 300px; height: auto; border: 1px solid #ccc; margin-top: 15px;"/>
+        
+        <hr>
+        <p class="mb-0">
+            Esta ação é **irreversível** e removerá permanentemente o registro e o arquivo de imagem.
+        </p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <button type="submit" class="btn btn-danger btn-lg me-3">
+            Sim, Excluir Definitivamente
+        </button>
+        
+        <a href="{% url 'portifolio:detalhe_projeto' imagem.projeto.id %}" class="btn btn-secondary btn-lg">
+            Cancelar e Voltar
+        </a>
+        
+    </form>
+    
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %} 
+
+{% block title %}Confirmar Exclusão de Projeto{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <h1 class="mb-4">Excluir Projeto</h1>
+    
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">⚠️ EXCLUSÃO PERMANENTE ⚠️</h4>
+        <p>Você tem certeza que deseja excluir o projeto:</p>
+        
+        <h2 class="display-6 text-danger">"{{ projeto.titulo }}"</h2>
+        
+        <hr>
+        <p class="mb-0">
+            **ATENÇÃO:** Esta ação é **irreversível**. Excluir este projeto removerá permanentemente:
+            <ul>
+                <li>O registro do projeto.</li>
+                <li>Todas as associações com tecnologias.</li>
+                <li>Todas as imagens associadas e seus arquivos físicos.</li>
+            </ul>
+        </p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <button type="submit" class="btn btn-danger btn-lg me-3">
+            Sim, Excluir o Projeto e Conteúdo Relacionado
+        </button>
+        
+        <a href="{% url 'portifolio:detalhe_projeto' projeto.id %}" class="btn btn-secondary btn-lg">
+            Cancelar e Voltar
+        </a>
+        
+    </form>
+    
+</div>
+{% endblock %}
