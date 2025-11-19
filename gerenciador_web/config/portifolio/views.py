@@ -3,9 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Projeto, Tecnologia, ImagemProjeto
 
 
-# ===============================
-# LISTAGEM DE PROJETOS
-# ===============================
+
 
 def listar_projetos(request):
     projetos_salvos = Projeto.objects.all()
@@ -17,9 +15,7 @@ def listar_projetos(request):
     return render(request, 'portfolio/lista_projetos.html', contexto)
 
 
-# ===============================
-# DETALHE DO PROJETO
-# ===============================
+
 
 def detalhe_projeto(request, projeto_id):
     projeto = get_object_or_404(Projeto, pk=projeto_id)
@@ -32,9 +28,7 @@ def detalhe_projeto(request, projeto_id):
     )
 
 
-# ===============================
-# ADICIONAR PROJETO
-# ===============================
+
 
 def adicionar_projeto(request):
     tecnologias = Tecnologia.objects.all()
@@ -59,9 +53,7 @@ def adicionar_projeto(request):
     return render(request, 'portfolio/form_projeto.html', {'tecnologias': tecnologias})
 
 
-# ===============================
-# ALTERAR PROJETO
-# ===============================
+
 
 def alterar_projeto(request, projeto_id):
     projeto = get_object_or_404(Projeto, pk=projeto_id)
@@ -92,9 +84,7 @@ def alterar_projeto(request, projeto_id):
     return render(request, 'portfolio/form_projeto.html', contexto)
 
 
-# ===============================
-# EXCLUIR PROJETO
-# ===============================
+
 
 def excluir_projeto(request, projeto_id):
     projeto = get_object_or_404(Projeto, pk=projeto_id)
