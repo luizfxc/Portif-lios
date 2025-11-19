@@ -1,0 +1,15 @@
+{% extends 'portifolio/base.html' %}
+{% block conteudo %}
+
+<h2>Enviar Imagem</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label>Escolha uma imagem:</label><br>
+    <input type="file" name="imagem"><br><br>
+
+    <button type="submit">Enviar</button>
+</form>
+
+{% endblock %}

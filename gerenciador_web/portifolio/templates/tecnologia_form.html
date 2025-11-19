@@ -1,0 +1,15 @@
+{% extends 'portifolio/base.html' %}
+{% block conteudo %}
+
+<h2>{% if tecnologia %}Editar Tecnologia{% else %}Adicionar Tecnologia{% endif %}</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Nome da tecnologia:</label><br>
+    <input type="text" name="nome" value="{{ tecnologia.nome|default:'' }}"><br><br>
+
+    <button type="submit">Salvar</button>
+</form>
+
+{% endblock %}

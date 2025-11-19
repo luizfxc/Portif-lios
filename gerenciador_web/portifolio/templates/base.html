@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Portfólio</title>
+</head>
+<body>
+
+<header>
+    <h1>Portfólio de Projetos</h1>
+</header>
+
+<nav>
+    <a href="{% url 'portifolio:projeto_listar' %}">Projetos</a> |
+    <a href="{% url 'portifolio:tecnologia_listar' %}">Tecnologias</a>
+</nav>
+
+<hr>
+
+{% block conteudo %}{% endblock %}
+
+</body>
+</html>

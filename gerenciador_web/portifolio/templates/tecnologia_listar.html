@@ -1,0 +1,20 @@
+{% extends 'portifolio/base.html' %}
+{% block conteudo %}
+
+<h2>Tecnologias</h2>
+
+<a href="{% url 'portifolio:tecnologia_criar' %}">Adicionar Tecnologia</a>
+
+<ul>
+{% for t in tecnologias %}
+    <li>
+        {{ t.nome }}
+        — <a href="{% url 'portifolio:tecnologia_editar' t.id %}">Editar</a>
+        — <a href="{% url 'portifolio:tecnologia_excluir' t.id %}">Excluir</a>
+    </li>
+{% empty %}
+    <p>Nenhuma tecnologia cadastrada.</p>
+{% endfor %}
+</ul>
+
+{% endblock %}
