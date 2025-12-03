@@ -1,20 +1,25 @@
-{% extends 'portifolio/base.html' %}
-{% block conteudo %}
+{% extends "portifolio/base_admin.html" %}
 
-<h2>Tecnologias</h2>
+{% block content %}
+    <h2>Gestão de Tecnologias</h2>
+    <a href="{% url 'portifolio:tecnologia_criar' %}" class="back-link" style="background-color: green; color: white; padding: 5px 10px; border-radius: 4px;">+ Adicionar Nova Tecnologia</a>
+    
+    <hr>
+    
+    {% if tecnologias %}
+        <ul style="list-style: none; padding: 0;">
+            {% for tecnologia in tecnologias %}
+                <li style="border-bottom: 1px dashed #ddd; padding: 10px 0; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: bold;">{{ tecnologia.nome }}</span>
+                    <div>
+                        <a href="{% url 'portifolio:tecnologia_editar' tecnologia.id %}" style="margin-right: 10px; color: orange;">Editar</a>
+                        <a href="{% url 'portifolio:tecnologia_excluir' tecnologia.id %}" style="color: red;">Excluir</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nenhuma tecnologia cadastrada.</p>
+    {% endif %}
 
-<a href="{% url 'portifolio:tecnologia_criar' %}">Adicionar Tecnologia</a>
-
-<ul>
-{% for t in tecnologias %}
-    <li>
-        {{ t.nome }}
-        — <a href="{% url 'portifolio:tecnologia_editar' t.id %}">Editar</a>
-        — <a href="{% url 'portifolio:tecnologia_excluir' t.id %}">Excluir</a>
-    </li>
-{% empty %}
-    <p>Nenhuma tecnologia cadastrada.</p>
-{% endfor %}
-</ul>
-
-{% endblock %}
+{% endblock content %}

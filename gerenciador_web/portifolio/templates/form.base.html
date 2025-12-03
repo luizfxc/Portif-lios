@@ -1,0 +1,39 @@
+{% extends "portifolio/base_admin.html" %}
+
+{% block content %}
+    {% if projeto %}
+        <h2>Alterar Projeto: {{ projeto.titulo }}</h2>
+        <a href="{% url 'portifolio:detalhe_projeto' projeto.id %}" class="back-link">&larr; Voltar para o Projeto</a>
+    {% elif tecnologia %}
+        <h2>{% if form.instance.pk %}Alterar Tecnologia{% else %}Adicionar Nova Tecnologia{% endif %}</h2>
+        <a href="{% url 'portifolio:tecnologia_listar' %}" class="back-link">&larr; Voltar para as Tecnologias</a>
+    {% else %}
+        <h2>Adicionar Novo Projeto</h2>
+        <a href="{% url 'portifolio:listar_projetos' %}" class="back-link">&larr; Voltar para a Lista de Projetos</a>
+    {% endif %}
+    
+    <form method="POST"> 
+        {% csrf_token %} {% if form.non_field_errors %}
+            <div class="errorlist">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }} {% if field.help_text %}
+                    <small style="color: #666; display: block; margin-bottom: 5px;">{{ field.help_text }}</small>
+                {% endif %}
+                
+                {{ field }} {% for error in field.errors %}
+                    <p class="errorlist">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <button type="submit">Guardar</button>
+    </form>
+
+{% endblock content %}

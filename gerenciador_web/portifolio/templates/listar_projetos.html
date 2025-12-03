@@ -1,19 +1,46 @@
-{% extends 'portifolio/base.html' %}
-{% block conteudo %}
+{% extends "portifolio/base.html" %}
 
-<h2>Lista de Projetos</h2>
+{% block content %}
+    <h2>Projetos Recentes</h2>
 
-<a href="{% url 'portifolio:adicionar_projeto' %}">Adicionar Projeto</a>
-
-<ul>
-{% for projeto in projetos %}
-    <li>
-        <strong>{{ projeto.titulo }}</strong><br>
-        <a href="{% url 'portifolio:detalhe_projeto' projeto.id %}">Ver detalhes</a>
-    </li>
-{% empty %}
-    <p>Nenhum projeto cadastrado.</p>
-{% endfor %}
-</ul>
-
-{% endblock %}
+    <div class="filtros" style="margin-bottom: 30px; border-bottom: 1px solid #ddd; padding-bottom: 15px;">
+        <h3 style="margin-top: 0;">Filtrar por:</h3>
+        
+        <a href="{% url 'portifolio:listar_projetos' %}" 
+           style="{% if not tecnologia_selecionada %}font-weight: bold; background-color: #007bff; color: white;{% else %}color: #007bff; border: 1px solid #007bff;{% endif %} 
+                  padding: 5px 10px; border-radius: 4px; text-decoration: none; margin-right: 10px;">
+            Todos
+        </a>
+        
+        {% for tec in tecnologias %}
+            <a href="{% url 'portifolio:listar_projetos' %}?tec={{ tec.id }}"
+               style="{% if tecnologia_selecionada.id == tec.id %}font-weight: bold; background-color: #007bff; color: white;{% else %}color: #007bff; border: 1px solid #007bff;{% endif %} 
+                      padding: 5px 10px; border-radius: 4px; text-decoration: none; margin-right: 10px;">
+                {{ tec.nome }}
+            </a>
+        {% endfor %}
+    </div>
+    {% if projetos %}
+        {% for projeto in projetos %}
+            <div class="projeto-card">
+                <h3><a href="{% url 'portifolio:detalhe_projeto' projeto.id %}">{{ projeto.titulo }}</a></h3>
+                <p>{{ projeto.descricao|truncatechars:150 }}</p>
+                
+                <h4>Tecnologia Principal:</h4>
+                <div class="tecnologias-lista">
+                    {% if projeto.tecnologia %}
+                        <span>{{ projeto.tecnologia.nome }}</span>
+                    {% else %}
+                        <span>Não Especificado</span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        {% if tecnologia_selecionada %}
+             <p>Não há projetos que utilizem a tecnologia **{{ tecnologia_selecionada.nome }}**.</p>
+        {% else %}
+             <p>Ainda não há projetos cadastrados.</p>
+        {% endif %}
+    {% endif %}
+{% endblock content %}

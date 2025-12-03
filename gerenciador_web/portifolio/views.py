@@ -1,115 +1,67 @@
 from django.shortcuts import render, get_object_or_404, redirect
-
 from .models import Projeto, Tecnologia, ImagemProjeto
+from .forms import ProjetoForm, TecnologiaForm 
 
-
-
-
-def listar_projetos(request):
-    projetos = Projeto.objects.all()
-    return render(request, 'portifolio/listar_projetos.html', {'projetos': projetos})
-
-
-def detalhe_projeto(request, projeto_id):
-    projeto = get_object_or_404(Projeto, id=projeto_id)
-    imagens = ImagemProjeto.objects.filter(projeto=projeto)
-    return render(request, 'portifolio/detalhe_projeto.html', {
-        'projeto': projeto,
-        'imagens': imagens
-    })
 
 
 def adicionar_projeto(request):
+    """Adiciona um novo projeto usando ModelForm."""
     if request.method == "POST":
-        titulo = request.POST['titulo']
-        descricao = request.POST['descricao']
-        link = request.POST.get('link', '')
 
-        projeto = Projeto.objects.create(
-            titulo=titulo,
-            descricao=descricao,
-            link=link
-        )
-        return redirect('portifolio:projeto_detalhe', projeto.id)
+        form = ProjetoForm(request.POST) 
+        if form.is_valid():
 
-    return render(request, 'portifolio/projeto_form.html')
+            projeto = form.save() 
+            return redirect('portifolio:detalhe_projeto', projeto.id)
+    else:
+
+        form = ProjetoForm() 
+        
+    return render(request, 'portifolio/projeto_form.html', {'form': form})
 
 
 def alterar_projeto(request, projeto_id):
+    """Altera um projeto existente usando ModelForm."""
     projeto = get_object_or_404(Projeto, id=projeto_id)
-
+    
     if request.method == "POST":
-        projeto.titulo = request.POST['titulo']
-        projeto.descricao = request.POST['descricao']
-        projeto.link = request.POST.get('link', '')
-        projeto.save()
 
-        return redirect('portifolio:projeto_detalhe', projeto.id)
+        form = ProjetoForm(request.POST, instance=projeto) 
+        if form.is_valid():
+            form.save()
+            return redirect('portifolio:detalhe_projeto', projeto.id)
+    else:
 
-    return render(request, 'portifolio/projeto_form.html', {'projeto': projeto})
+        form = ProjetoForm(instance=projeto)
+        
+    return render(request, 'portifolio/projeto_form.html', {'form': form, 'projeto': projeto})
 
-
-def excluir_projeto(request, projeto_id):
-    projeto = get_object_or_404(Projeto, id=projeto_id)
-    projeto.delete()
-    return redirect('portifolio:projeto_listar')
-
-
-
-def tecnologia_listar(request):
-    tecnologias = Tecnologia.objects.all()
-    return render(request, 'portifolio/tecnologia_listar.html', {'tecnologias': tecnologias})
 
 
 def tecnologia_criar(request):
+    """Cria uma nova tecnologia usando ModelForm."""
     if request.method == "POST":
-        nome = request.POST['nome']
-        Tecnologia.objects.create(nome=nome)
-        return redirect('portifolio:tecnologia_listar')
-
-    return render(request, 'portifolio/tecnologia_form.html')
+        form = TecnologiaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('portifolio:tecnologia_listar')
+    else:
+        form = TecnologiaForm()
+        
+    return render(request, 'portifolio/tecnologia_form.html', {'form': form})
 
 
 def tecnologia_editar(request, tecnologia_id):
+    """Edita uma tecnologia existente usando ModelForm."""
     tecnologia = get_object_or_404(Tecnologia, id=tecnologia_id)
-
+    
     if request.method == "POST":
-        tecnologia.nome = request.POST['nome']
-        tecnologia.save()
-        return redirect('portifolio:tecnologia_listar')
+        form = TecnologiaForm(request.POST, instance=tecnologia)
+        if form.is_valid():
+            form.save()
+            return redirect('portifolio:tecnologia_listar')
+    else:
+        form = TecnologiaForm(instance=tecnologia)
 
-    return render(request, 'portifolio/tecnologia_form.html', {'tecnologia': tecnologia})
+    return render(request, 'portifolio/tecnologia_form.html', {'form': form, 'tecnologia': tecnologia})
 
-
-def tecnologia_excluir(request, tecnologia_id):
-    tecnologia = get_object_or_404(Tecnologia, id=tecnologia_id)
-    tecnologia.delete()
-    return redirect('portifolio:tecnologia_listar')
-
-
-
-def imagem_listar(request, projeto_id):
-    projeto = get_object_or_404(Projeto, id=projeto_id)
-    imagens = ImagemProjeto.objects.filter(projeto=projeto)
-    return render(request, 'portifolio/imagem_listar.html', {
-        'projeto': projeto,
-        'imagens': imagens
-    })
-
-
-def imagem_criar(request, projeto_id):
-    projeto = get_object_or_404(Projeto, id=projeto_id)
-
-    if request.method == "POST":
-        imagem = request.FILES.get('imagem')
-        ImagemProjeto.objects.create(projeto=projeto, imagem=imagem)
-        return redirect('portifolio:imagem_listar', projeto.id)
-
-    return render(request, 'portifolio/imagem_form.html', {'projeto': projeto})
-
-
-def imagem_excluir(request, imagem_id):
-    img = get_object_or_404(ImagemProjeto, id=imagem_id)
-    projeto_id = img.projeto.id
-    img.delete()
-    return redirect('portifolio:imagem_listar', projeto_id)

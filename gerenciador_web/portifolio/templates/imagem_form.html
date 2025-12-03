@@ -1,15 +1,22 @@
-{% extends 'portifolio/base.html' %}
-{% block conteudo %}
+{% extends "portifolio/base_admin.html" %}
 
-<h2>Enviar Imagem</h2>
+{% block content %}
+    <h2>Adicionar Imagem a: {{ projeto.titulo }}</h2>
+    <a href="{% url 'portifolio:imagem_listar' projeto.id %}" class="back-link">&larr; Voltar para a Galeria</a>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+    <form method="POST" enctype="multipart/form-data"> 
+        {% csrf_token %}
 
-    <label>Escolha uma imagem:</label><br>
-    <input type="file" name="imagem"><br><br>
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% for error in field.errors %}
+                    <p class="errorlist">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
 
-    <button type="submit">Enviar</button>
-</form>
-
-{% endblock %}
+        <button type="submit">Fazer Upload e Guardar</button>
+    </form>
+{% endblock content %}

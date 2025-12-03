@@ -1,34 +1,51 @@
-{% extends 'portifolio/base.html' %}
-{% block conteudo %}
+{% extends "portifolio/base.html" %}
 
-<h2>{{ projeto.titulo }}</h2>
+{% block content %}
+    <div class="detalhe-projeto">
+        <a href="{% url 'portifolio:listar_projetos' %}" class="detalhe-link">&larr; Voltar para o Portfólio</a>
 
-<p>{{ projeto.descricao }}</p>
+        <h2>{{ projeto.titulo }}</h2>
+        <p style="color: #6c757d;">Publicado em: {{ projeto.data_criacao|date:"d/m/Y" }}</p>
 
-{% if projeto.link %}
-<p>Link: <a href="{{ projeto.link }}" target="_blank">{{ projeto.link }}</a></p>
-{% endif %}
+        {% if projeto.link %}
+            <p><a href="{{ projeto.link }}" target="_blank" style="font-weight: bold; color: green;">Aceder Projeto Online &rarr;</a></p>
+        {% endif %}
 
-<hr>
+        ---
 
-<h3>Imagens</h3>
+        <h3>Descrição do Projeto</h3>
+        <p style="white-space: pre-wrap;">{{ projeto.descricao }}</p>
 
-<a href="{% url 'portifolio:imagem_criar' projeto.id %}">Adicionar Imagem</a>
+        ---
 
-<ul>
-{% for img in imagens %}
-    <li>
-        <img src="{{ img.imagem.url }}" width="200"><br>
-        <a href="{% url 'portifolio:imagem_excluir' img.id %}">Excluir</a>
-    </li>
-{% empty %}
-    <p>Nenhuma imagem cadastrada.</p>
-{% endfor %}
-</ul>
+        <h3>Tecnologia Principal</h3>
+        <div class="tecnologias-lista">
+            {% if projeto.tecnologia %}
+                <span>{{ projeto.tecnologia.nome }}</span>
+            {% else %}
+                <span>Nenhuma tecnologia principal definida.</span>
+            {% endif %}
+        </div>
 
-<hr>
+        ---
 
-<a href="{% url 'portifolio:alterar_projeto' projeto.id %}">Editar Projeto</a> |
-<a href="{% url 'portifolio:excluir_projeto' projeto.id %}">Excluir Projeto</a>
-
-{% endblock %}
+        {% if imagens %}
+            <h3>Galeria de Imagens</h3>
+            <div class="galeria-imagens" style="display: flex; flex-wrap: wrap; gap: 15px;">
+                {% for img in imagens %}
+                    <div style="flex: 1 1 250px; border: 1px solid #ddd; padding: 10px; border-radius: 4px; text-align: center;">
+                        
+                        <img src="{{ img.imagem }}" alt="{{ img.legenda|default:'Imagem do Projeto' }}" 
+                             style="max-width: 100%; height: auto; display: block; margin-bottom: 10px; border-radius: 4px;">
+                        
+                        {% if img.legenda %}
+                            <p style="font-size: 0.9em; color: #6c757d;">{{ img.legenda }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Nenhuma imagem cadastrada para este projeto.</p>
+        {% endif %}
+    </div>
+{% endblock content %}
